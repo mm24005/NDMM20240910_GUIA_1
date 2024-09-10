@@ -49,9 +49,17 @@ app.MapPut("/products/{id}", (int id, Product product) =>
     return Results.NotFound();
 });
 
-app.UseAuthorization();
-
-app.MapControllers();
+// eliminar un producto
+app.MapDelete("/products/{id}", (int id) =>
+{
+    var product = products.FirstOrDefault(p => p.Id == id);
+    if (product != null)
+    {
+        products.Remove(product);
+        return Results.Ok();
+    }
+    return Results.NotFound();
+});
 
 app.Run();
 
@@ -59,6 +67,6 @@ app.Run();
 public class Product
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public decimal Price { get; set; }
 }
