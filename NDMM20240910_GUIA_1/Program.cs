@@ -18,12 +18,31 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// lista de productos en memoria
+var products = new List<Product>();
+
+// obtener todos los productos
+app.MapGet("/products", () => products);
+
+// obtener un producto por Id
+app.MapGet("/products/{id}", (int id) => products.FirstOrDefault(p => p.Id == id));
+
+
+//Crear un producto//
+
+app.MapPost("/products", (Product product) =>
+{
+    products.Add(product);
+    return Results.Ok();
+});
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
 
+//clase producto//
 public class Product
 {
     public int Id { get; set; }
